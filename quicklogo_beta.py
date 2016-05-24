@@ -82,8 +82,7 @@ def preview(file_in, savepath, file_out):
     """
     html = open("testpage.html", "w")
     html.write("<html><head><title>Test Page</title><style>body{background:rgba(0,0,0,.7);color:#fff;font-family:'Arial';}img{max-height:30%;max-width:40%;display:block;margin-left:auto;margin-right:auto;margin-top:10px;}</style>")
-    temp = "</head><body>Before<img src='" + file_in + "'><br/>After<img src='"+ savepath + file_out + "'></body></html>"
-    html.write(temp)
+    html.write("</head><body>Before<img src='" + file_in + "'><br/>After<img src='"+ savepath + file_out + "'></body></html>")
     html.close()
     webbrowser.open("testpage.html", new=2, autoraise=False)
 
@@ -105,7 +104,7 @@ def upload(filename):
     )
     return cloudinary.uploader.upload(filename)
 
-def run(file_in, savepath, threshold=30):
+def run(file_in, savepath, threshold=100):
     """
     Runs QuickLogo
 
@@ -138,7 +137,7 @@ def run(file_in, savepath, threshold=30):
 
 # Main
 file_in = str(easygui.fileopenbox("Select image to process..."))
-savepath = "./TestOut/"     # Manually specify image save directory
+savepath = "./TestOut/"     # Manually specify image save directory for now
 
 if not file_in == ".":
     file_out = run(file_in, savepath , 120)
