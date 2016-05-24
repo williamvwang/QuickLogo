@@ -38,6 +38,7 @@ def most_frequent_color(image):
         if count > most_frequent[0]:
             most_frequent = (count, pixel)
 
+    print "Most frequent color: RGBA" + str(most_frequent[1]) + " [" + str(most_frequent[0]) + " pixels]"
     return most_frequent[1]
 
 def color_to_transparency(image, target_color, threshold):
@@ -72,10 +73,16 @@ def color_to_transparency(image, target_color, threshold):
 def preview(file_in, savepath, file_out):
     """
     Opens before and after comparison in web browser
+
+    Input:
+    file_in -- string filename of image that was transformed
+    savepath -- string directory the transformed image was saved to
+    file_out -- string filename the transformed image was saved to
+
     """
     html = open("testpage.html", "w")
     html.write("<html><head><title>Test Page</title><style>body{background:rgba(0,0,0,.7);color:#fff;font-family:'Arial';}img{max-height:30%;max-width:40%;display:block;margin-left:auto;margin-right:auto;margin-top:10px;}</style>")
-    temp = "</head><body>Before<img src='" + file_in + "'>After<img src='"+ savepath + file_out + "'></body></html>"
+    temp = "</head><body>Before<img src='" + file_in + "'><br/>After<img src='"+ savepath + file_out + "'></body></html>"
     html.write(temp)
     html.close()
     webbrowser.open("testpage.html", new=2, autoraise=False)
@@ -87,9 +94,9 @@ def upload(filename):
     Input:
     filename -- string filename of image to upload
     """
-    cloud_name = None  # YOUR_CLOUD_NAME_HERE
-    api_key = None     # YOUR_API_KEY_HERE
-    api_secret = None  # YOUR_API_SECRET_HERE
+    cloud_name = None     # YOUR_CLOUD_NAME_HERE
+    api_key = None        # YOUR_API_KEY_HERE
+    api_secret = None     # YOUR_API_SECRET_HERE
 
     cloudinary.config( 
       cloud_name = cloud_name, 
@@ -104,8 +111,10 @@ def run(file_in, savepath, threshold=30):
 
     Inputs:
     file_in -- string filename of image to transform
-    file_out -- string filename the transformed image will be saved to
+    savepath -- string directory the transformed image will be saved to
     threshold -- maximum 4D distance between target_color and removed pixels
+
+    Output: 
     """
     alias = file_in.split("\\")[-1]
     print "Transforming", alias
@@ -131,8 +140,8 @@ def run(file_in, savepath, threshold=30):
 file_in = str(easygui.fileopenbox("Select image to process..."))
 savepath = "./TestOut/"     # Manually specify image save directory
 
-if (not file_in == "."):
-    file_out = run(file_in, savepath , 50)
+if not file_in == ".":
+    file_out = run(file_in, savepath , 120)
     preview(file_in, savepath, file_out)
 
     """ Uncomment this block to enable Cloudinary upload
